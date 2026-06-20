@@ -31,13 +31,9 @@ website by a Jenkins pipeline whenever changes are pushed to GitHub.
 
 ## Jenkins setup
 
-1. **Credentials** — In *Manage Jenkins → Credentials*, add two *Secret text*
-   credentials:
-   - `aws-access-key-id`
-   - `aws-secret-access-key`
-
-   (Or attach an IAM instance role to the Jenkins agent and remove the
-   `credentials(...)` lines from the `Jenkinsfile`.)
+1. **AWS access** — The Jenkins EC2 instance has the IAM role
+   `JenkinsS3DeployRole` (with `AmazonS3FullAccess`) attached, so the AWS CLI
+   authenticates automatically — no access keys are stored in Jenkins.
 
 2. **Prerequisites on the agent** — the AWS CLI v2 must be installed and on
    `PATH`.

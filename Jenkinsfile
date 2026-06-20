@@ -5,9 +5,9 @@ pipeline {
         // S3 bucket the static site is deployed to
         S3_BUCKET  = 'jenkins-static-site-799183605681'
         AWS_REGION = 'ap-south-1'
-        // Jenkins credentials IDs (configure these in: Manage Jenkins > Credentials)
-        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        // No access keys needed: the Jenkins EC2 instance has the
+        // IAM role "JenkinsS3DeployRole" attached, so the AWS CLI
+        // picks up temporary credentials automatically.
     }
 
     options {
