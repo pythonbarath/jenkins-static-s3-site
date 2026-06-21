@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Revanth's CI/CD &mdash; Jenkins &rarr; S3</title>
-  <meta name="description" content="A static site continuously deployed from GitHub to AWS S3 using Jenkins." />
+  <title>Revanth's CI/CD &mdash; AWS CodePipeline &rarr; S3</title>
+  <meta name="description" content="A static site continuously deployed from GitHub to AWS S3 using AWS CodePipeline." />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -18,11 +18,11 @@
       </ul>
     </nav>
     <div class="hero-content">
-      <span class="badge"><span class="dot"></span> Live on AWS S3</span>
+      <span class="badge"><span class="dot"></span> Built with AWS CodePipeline</span>
       <h1>Revanth's CI/CD: from <span class="accent">git push</span> to live in seconds</h1>
       <p class="subtitle">
         This page was built locally, pushed to GitHub, and deployed to an
-        AWS S3 static website &mdash; automatically &mdash; by Revanth's Jenkins pipeline.
+        AWS S3 static website &mdash; automatically &mdash; by AWS CodePipeline.
       </p>
       <a class="cta" href="#pipeline">See how it works</a>
     </div>
@@ -34,9 +34,9 @@
       <div class="flow">
         <div class="flow-step"><span class="step-num">1</span><h3>Code</h3><p>HTML &amp; CSS committed to a GitHub repository.</p></div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step"><span class="step-num">2</span><h3>Build</h3><p>Jenkins checks out the repo on each push.</p></div>
+        <div class="flow-step"><span class="step-num">2</span><h3>Build</h3><p>AWS CodePipeline pulls the repo on each push.</p></div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step"><span class="step-num">3</span><h3>Deploy</h3><p><code>aws s3 sync</code> uploads the site to S3.</p></div>
+        <div class="flow-step"><span class="step-num">3</span><h3>Deploy</h3><p>The S3 deploy action uploads the site to S3.</p></div>
         <div class="flow-arrow">→</div>
         <div class="flow-step"><span class="step-num">4</span><h3>Live</h3><p>Served instantly from the S3 website endpoint.</p></div>
       </div>
@@ -46,7 +46,7 @@
       <h2>Tech stack</h2>
       <div class="cards">
         <div class="card"><h3>GitHub</h3><p>Source of truth and trigger for every deployment.</p></div>
-        <div class="card"><h3>Jenkins</h3><p>Automation server running the declarative pipeline.</p></div>
+        <div class="card"><h3>AWS CodePipeline</h3><p>Managed CI/CD orchestrating source &rarr; deploy.</p></div>
         <div class="card"><h3>AWS S3</h3><p>Static website hosting, fast and serverless.</p></div>
       </div>
     </section>
