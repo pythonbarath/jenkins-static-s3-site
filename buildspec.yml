@@ -1,0 +1,54 @@
+# AWS CodeBuild build spec — deploys the static site to S3.
+# Used by AWS CodePipeline instead of the Jenkinsfile. The Jenkinsfile
+# is ignored during this deployment (it is simply excluded from the sync).
+#
+# Auth: no access keys. The CodeBuild project's service role must have
+# permission to write to the S3 bucket (see the README / instructions).
+
+version: 0.2
+
+env:
+  variables:
+    S3_BUCKET: "jenkins-static-site-799183605681"
+    AWS_REGION: "ap-south-1"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      # AWS CLI v2 is preinstalled on CodeBuild standard images.
+      - aws --version
+
+  pre_build:
+    commands:
+      - echo "Verifying AWS access..."
+      - aws sts get-caller-identity --region "$AWS_REGION"
+
+  build:
+    commands:
+      - echo "Deploying site to s3://$S3_BUCKET ..."
+      # Upload everything except VCS/CI metadata.
+      # --delete removes files from the bucket that no longer exist in the repo.
+      - >
+        aws s3 sync . "s3://$S3_BUCKET"
+        --region "$AWS_REGION"
+        --delete
+        --exclude ".git/*"
+        --exclude "Jenkinsfile"
+        --exclude "buildspec.yml"
+        --exclude "README.md"
+        --exclude ".gitignore"
+
+  post_build:
+    commands:
+      - echo "Setting no-cache headers on HTML so updates show immediately..."
+      - >
+        aws s3 cp "s3://$S3_BUCKET" "s3://$S3_BUCKET"
+        --region "$AWS_REGION"
+        --recursive
+        --exclude "*" --include "*.html"
+        --metadata-directive REPLACE
+        --cache-control "no-cache"
+        --content-type "text/html"
+      - echo "Deployed to http://$S3_BUCKET.s3-website.$AWS_REGION.amazonaws.com"
